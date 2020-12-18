@@ -1,0 +1,51 @@
+- name:  Replication process script copy to primary node
+  template: src={{item.src}} dest={{item.dest}}
+  with_items:
+    - { src: 'replicaset-process-primary-1.j2', dest: '/tmp/replicaset-process-1.js' }
+    - { src: 'replicaset-process-primary-2.j2', dest: '/tmp/replicaset-process-2.js' }
+    - { src: 'replicaset-process-primary-3.j2', dest: '/tmp/replicaset-process-3.js' }
+    - { src: 'replicaset-process-primary-4.j2', dest: '/tmp/replicaset-process-4.js' }
+    - { src: 'replicaset-process-primary-5.j2', dest: '/tmp/replicaset-process-5.js' }
+    - { src: 'replicaset-process-primary-6.j2', dest: '/tmp/replicaset-process-6.js' }
+    - { src: 'replicaset-process-primary-7.j2', dest: '/tmp/replicaset-process-7.js' }
+    - { src: 'replicaset-process-primary-8.j2', dest: '/tmp/replicaset-process-8.js' }
+
+- name: Create replicaset in primary node
+  shell: mongo -u replica -p replica --authenticationDatabase admin  < /tmp/replicaset-process-1.js
+- pause:
+    seconds: 2
+
+- name: Create replicaset in primary node
+  shell: mongo -u replica -p replica --authenticationDatabase admin  < /tmp/replicaset-process-2.js
+- pause:
+    seconds: 2
+      
+- name: Create replicaset in primary node
+  shell: mongo -u replica -p replica --authenticationDatabase admin  < /tmp/replicaset-process-3.js
+- pause:
+    seconds: 2
+
+- name: Create replicaset in primary node
+  shell: mongo -u replica -p replica --authenticationDatabase admin  < /tmp/replicaset-process-4.js
+- pause:
+    seconds: 2
+
+- name: Create replicaset in primary node
+  shell: mongo -u replica -p replica --authenticationDatabase admin  < /tmp/replicaset-process-5.js
+- pause:
+    seconds: 2
+
+- name: Create replicaset in primary node
+  shell: mongo -u replica -p replica --authenticationDatabase admin  < /tmp/replicaset-process-6.js
+- pause:
+    seconds: 2
+
+- name: Create replicaset in primary node
+  shell: mongo -u replica -p replica --authenticationDatabase admin  < /tmp/replicaset-process-7.js
+- pause:
+    seconds: 2
+
+- name: Create replicaset in primary node
+  shell: mongo -u replica -p replica --authenticationDatabase admin  < /tmp/replicaset-process-8.js
+- pause:
+    seconds: 2

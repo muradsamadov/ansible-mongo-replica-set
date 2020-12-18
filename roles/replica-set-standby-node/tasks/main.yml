@@ -1,0 +1,21 @@
+- name: Replication process script copy to standby node
+  template: src={{item.src}} dest={{item.dest}}
+  with_items:
+    - { src: 'replicaset-process-standby-1.j2', dest: '/tmp/replicaset-process-1.js' }
+    - { src: 'replicaset-process-standby-2.j2', dest: '/tmp/replicaset-process-2.js' }
+    - { src: 'replicaset-process-standby-3.j2', dest: '/tmp/replicaset-process-3.js' }
+
+- name: Create replicaset in standby node
+  shell: mongo -u replica -p replica --authenticationDatabase admin  < /tmp/replicaset-process-1.js
+- pause:
+    seconds: 2
+
+- name: Create replicaset in standby node
+  shell: mongo -u replica -p replica --authenticationDatabase admin  < /tmp/replicaset-process-2.js
+- pause:
+    seconds: 2
+
+- name: Create replicaset in standby node
+  shell: mongo -u replica -p replica --authenticationDatabase admin  < /tmp/replicaset-process-3.js
+- pause:
+    seconds: 2  

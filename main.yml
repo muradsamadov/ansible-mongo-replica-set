@@ -1,0 +1,18 @@
+- name: Configuring Mongodb replication
+  hosts: clients
+  gather_facts: yes
+  roles:
+    - modify-host-file
+    - install-mongod
+
+- name: Configuring Mongodb replication
+  hosts: mongo-primary
+  gather_facts: yes
+  roles:
+    - replica-set-primary-node
+
+- name: Configuring Mongodb replication
+  hosts: mongo-standby
+  gather_facts: yes
+  roles:
+    - replica-set-standby-node

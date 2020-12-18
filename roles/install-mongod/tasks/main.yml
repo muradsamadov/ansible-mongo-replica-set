@@ -1,0 +1,57 @@
+- name: Copy mongodb repo file to nodes
+  copy:
+    src: mongodb-org-4.4.repo
+    dest: /etc/yum.repos.d/mongodb-org-4.4.repo
+
+- name: Install the latest version of mongodb
+  yum:
+    name: mongodb-org
+    state: latest
+
+- name: Create a directory if it does not exist
+  file:
+    path: /opt/mongo
+    state: directory
+  ignore_errors: yes
+
+- name: Copy mongodb keyfile to nodes
+  copy:
+    src: mongo.key
+    dest: /opt/mongo
+    owner: mongod
+    group: mongod
+    mode: '0400'
+
+- name: Start and enable service mongod
+  service:
+    name: mongod
+    state: started
+    enabled: yes
+
+- name: wait a couple of seconds
+  pause: seconds=2
+
+- name: copy createUsers script
+  template: src=create-user-password.j2 dest=/tmp/createUsers.js
+
+- name: create users in mongodb
+  shell: mongo < /tmp/createUsers.js
+
+- name: wait a couple of seconds
+  pause: seconds=2
+
+- name: Copy mongod.conf file to nodes
+  template:  
+    src: mongod-conf.j2
+    dest: /etc/mongod.conf
+    backup: yes
+  become: yes
+  tags:
+    - copy_mongod.conf
+
+  notify: Restart service mongod
+  tags:
+    - always
+
+- name: wait a couple of seconds
+  pause: seconds=2
